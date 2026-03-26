@@ -10,12 +10,12 @@ import {
   Command, Zap, Cpu, Sparkles, ExternalLink, Copy, Check, Package, Send,
   Github, GraduationCap, Trophy, MessageSquare, Loader2,
 } from 'lucide-react';
+
 import { Canvas } from '@react-three/fiber';
 import { Stars, OrbitControls } from '@react-three/drei';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Theme = 'dark' | 'light' | 'matrix';
-
 // ─── Theme Hook ───────────────────────────────────────────────────────────────
 const useTheme = () => {
   const [theme, setTheme] = useState<Theme>('dark');
@@ -29,6 +29,7 @@ const useTheme = () => {
   }, [theme]);
   return [theme, setTheme] as const;
 };
+
 
 // ─── Custom Cursor ────────────────────────────────────────────────────────────
 function CustomCursor() {
@@ -436,7 +437,7 @@ function CommandMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
   }, [isOpen, flat, activeIdx, onClose]);
 
   if (!isOpen) return null;
-  let gi = -1;
+  
 
   return (
     <div className="cmd-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Command palette">
@@ -449,23 +450,25 @@ function CommandMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
         </div>
         <div className="cmd-list" role="listbox">
           {flat.length === 0 && <p className="cmd-empty">No results for &ldquo;<strong>{search}</strong>&rdquo;</p>}
-          {filtered.map(group => (
+          {filtered.map((group, groupIndex) => (
             <div key={group.group}>
               <p className="cmd-group-label">{group.group}</p>
-              {group.items.map(item => {
-                gi++; const cur = gi; const Icon = item.icon;
+              {group.items.map((item, itemIndex) => {
+                const cur = groupIndex * 100 + itemIndex;
+                const Icon = item.icon;
                 return (
                   <button key={item.text} className={`cmd-item ${cur === activeIdx ? 'active' : ''}`}
                     onMouseEnter={() => setActiveIdx(cur)} onClick={() => execute(item)} role="option" aria-selected={cur === activeIdx}>
-                    <span className="cmd-item-icon"><Icon size={15} /></span>
+                    {/* <span className="cmd-item-icon"><Icon size={15} /></span> */}
                     <span className="cmd-item-body">
-                      <span className="cmd-item-text">{item.text}</span>
+                     <span className="cmd-item-text">{item.text}</span>
                       {item.sub && <span className="cmd-item-sub">{item.sub}</span>}
                     </span>
                     <ArrowRight size={13} className="cmd-arrow" aria-hidden="true" />
                   </button>
                 );
               })}
+              
             </div>
           ))}
         </div>
@@ -930,3 +933,6 @@ export default function Home() {
     </>
   );
 }
+
+
+
