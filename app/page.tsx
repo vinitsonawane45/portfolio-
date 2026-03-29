@@ -8,7 +8,7 @@ import {
   Code, Database, BrainCircuit, Cloud, BarChart3, GitMerge, Briefcase,
   Search, ArrowRight, Sun, Moon, Terminal, User, ChevronDown,
   Command, Zap, Cpu, Sparkles, ExternalLink, Copy, Check, Package, Send,
-  Github, GraduationCap, Trophy, MessageSquare, Loader2,
+  Github, GraduationCap, Trophy, MessageSquare, Loader2, Menu, X,
 } from 'lucide-react';
 
 import { Canvas } from '@react-three/fiber';
@@ -16,6 +16,7 @@ import { Stars, OrbitControls } from '@react-three/drei';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Theme = 'dark' | 'light' | 'matrix';
+
 // ─── Theme Hook ───────────────────────────────────────────────────────────────
 const useTheme = () => {
   const [theme, setTheme] = useState<Theme>('dark');
@@ -29,7 +30,6 @@ const useTheme = () => {
   }, [theme]);
   return [theme, setTheme] as const;
 };
-
 
 // ─── Custom Cursor ────────────────────────────────────────────────────────────
 function CustomCursor() {
@@ -90,7 +90,12 @@ function CustomCursor() {
 // ─── Magnetic Wrapper ─────────────────────────────────────────────────────────
 function MagneticWrapper({ children, strength = 0.28 }: { children: React.ReactNode; strength?: number }) {
   const ref = useRef<HTMLDivElement>(null);
+  const isTouch = useRef(false);
+  useEffect(() => {
+    isTouch.current = window.matchMedia('(pointer: coarse)').matches;
+  }, []);
   const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (isTouch.current) return;
     const el = ref.current; if (!el) return;
     const r = el.getBoundingClientRect();
     el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * strength}px, ${(e.clientY - r.top - r.height / 2) * strength}px)`;
@@ -205,7 +210,6 @@ function ContactForm() {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    // ── Replace with your API / EmailJS / Formspree endpoint ──
     await new Promise(r => setTimeout(r, 1400));
     setStatus('sent');
     setTimeout(() => { setStatus('idle'); setForm({ name: '', email: '', subject: '', message: '' }); }, 4000);
@@ -303,17 +307,38 @@ const experiences = [
 ];
 
 const projects = [
-  {
-    title: 'AI Email Assistant',
-    tag: 'Python · Flask · LangChain · OpenAI API',
-    accent: '#6c8eff', glow: 'rgba(108,142,255,0.14)', icon: '✉️',
-    description: [
-      'Production-ready Chrome extension integrating ChatGPT, Gemini & Groq APIs for smart email drafting.',
-      'Multi-Model Reasoning cut API costs by 15% while maintaining 85% smart-reply accuracy.',
-      'Secure Railway backend with OAuth2 authentication and MongoDB user preference storage.',
-    ],
-    metrics: ['85% Accuracy', '15% Cost Cut', 'OAuth2', 'Multi-Model'],
-  },
+    {
+  title: '🌍 Multi-Lingual Blog Generator',
+  tag: 'AWS · Cloud Computing · DevOps · Deployment',
+  accent: '#6c8eff',
+  glow: 'rgba(108,142,255,0.14)',
+  icon: '☁️',
+  description: [
+    'Hands-on AWS project demonstrating cloud deployment, resource management, and scalable infrastructure design.',
+    'Worked with core AWS services like EC2, S3, and IAM for secure and efficient cloud architecture.',
+    'Focused on deployment pipelines and real-world cloud use cases aligned with DevOps practices.',
+    <a href="https://github.com/SAURABHSALVE/AWS-DEVPOST" target="_blank" rel="noopener noreferrer">
+      View Project
+    </a>
+  ],
+  metrics: ['AWS Deployment', 'Cloud Architecture', 'IAM Security'],
+},
+{
+  title: 'Artisan Craft Platform',
+  tag: 'Generative AI · Hackathon · NLP',
+  accent: '#ec4899',
+  glow: 'rgba(236,72,153,0.14)',
+  icon: '🚀',
+  description: [
+    'Hackathon-based GenAI project solving real-world problems using LLMs.',
+    'Implemented NLP and prompt engineering techniques.',
+    'Built with focus on rapid prototyping and innovation.',
+    <a href="https://github.com/SAURABHSALVE/genai-hackathon-artisans" target="_blank" rel="noopener noreferrer">
+      View Project
+    </a>
+  ],
+  metrics: ['Hackathon Build', 'NLP', 'Rapid Prototyping'],
+},
   {
     title: 'Saransh AI',
     tag: 'Hugging Face · Ollama · React.js',
@@ -326,27 +351,60 @@ const projects = [
     metrics: ['90% Consistency', 'Sentiment Analysis', 'Multi-doc'],
   },
   {
-    title: 'RAG Document Intelligence',
-    tag: 'LlamaIndex · Vector Search · Streamlit',
-    accent: '#f59e0b', glow: 'rgba(245,158,11,0.14)', icon: '📄',
-    description: [
-      'RAG system querying complex PDFs via Vector Embeddings and LlamaIndex pipelines.',
-      'Semantic Search retrieves context-aware answers, significantly outperforming keyword search.',
-      'Streamlit UI with drag-and-drop upload and chat-style Q&A interface.',
-    ],
-    metrics: ['RAG Pipeline', 'Vector Search', 'PDF Q&A'],
-  },
+  title: 'AI Image Generator',
+  tag: 'Generative AI · OpenAI API · Python',
+  accent: '#f59e0b',
+  glow: 'rgba(245,158,11,0.14)',
+  icon: '🎨',
+  description: [
+    'AI-based image generation system using generative models to create visuals from text prompts.',
+    'Integrated prompt-based generation with API handling.',
+    'Explores practical applications of generative AI.',
+    <a href="https://github.com/SAURABHSALVE/image-generation" target="_blank" rel="noopener noreferrer">
+      View Project
+    </a>
+  ],
+  metrics: ['Generative AI', 'Prompt-Based Output', 'API Usage'],
+},
   {
     title: 'Mental Health Assistant',
-    tag: 'ChatGPT API · Python · Intent Detection',
-    accent: '#fb7185', glow: 'rgba(251,113,133,0.14)', icon: '💬',
+    tag: 'ChatGPT API · Python · Intent Detection · Conversational AI',
+    accent: '#fb7185',
+    glow: 'rgba(251,113,133,0.14)',
+    icon: '💬',
     description: [
-      'Empathetic conversational agent using advanced Prompt Engineering for safe, context-aware responses.',
-      'Real-time Intent Detection analyses user mood and routes to appropriate support resources.',
-      'Guardrails and content filters ensure responsible AI in sensitive mental-health conversations.',
+      'AI-powered mental health assistant built using ChatGPT API for empathetic, context-aware conversations.',
+      'Integrated real-time intent detection to classify user emotions and dynamically route responses (support, escalation, or guidance).',
+      'Implemented safety guardrails, prompt engineering, and content filtering to handle sensitive mental-health scenarios responsibly.',
+      'Inspired by real-world AI healthcare platforms like :contentReference[oaicite:0]{index=0}, focusing on scalable and ethical AI solutions in health domains.',
+      'Live prototype available: ',
+      <a href="https://chatgpt.com/g/g-aDXDetJ0x-techcare" target="_blank" rel="noopener noreferrer">
+        View Project
+      </a>
     ],
-    metrics: ['Intent Detection', 'Prompt Engineering', 'Safe AI'],
+    metrics: [
+      'Intent Detection System',
+      'Prompt Engineering',
+      'Safe AI Guardrails',
+      'Conversational Flow Design'
+    ],
   },
+  {
+  title: 'Crypto Currency Tracker',
+  tag: 'React · API Integration · Real-Time Data',
+  accent: '#22c55e',
+  glow: 'rgba(34,197,94,0.14)',
+  icon: '📈',
+  description: [
+    'Real-time cryptocurrency tracking dashboard using external APIs for live market data.',
+    'Displays price trends, market stats, and dynamic updates with responsive UI.',
+    'Focused on API handling and frontend visualization.',
+    <a href="https://github.com/vinitsonawane45/crypto-currency-tracker" target="_blank" rel="noopener noreferrer">
+      View Project
+    </a>
+  ],
+  metrics: ['Live Data', 'API Integration', 'Frontend UI'],
+}
 ];
 
 const certifications = [
@@ -437,7 +495,6 @@ function CommandMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
   }, [isOpen, flat, activeIdx, onClose]);
 
   if (!isOpen) return null;
-  
 
   return (
     <div className="cmd-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label="Command palette">
@@ -459,16 +516,14 @@ function CommandMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void
                 return (
                   <button key={item.text} className={`cmd-item ${cur === activeIdx ? 'active' : ''}`}
                     onMouseEnter={() => setActiveIdx(cur)} onClick={() => execute(item)} role="option" aria-selected={cur === activeIdx}>
-                    {/* <span className="cmd-item-icon"><Icon size={15} /></span> */}
                     <span className="cmd-item-body">
-                     <span className="cmd-item-text">{item.text}</span>
+                      <span className="cmd-item-text">{item.text}</span>
                       {item.sub && <span className="cmd-item-sub">{item.sub}</span>}
                     </span>
                     <ArrowRight size={13} className="cmd-arrow" aria-hidden="true" />
                   </button>
                 );
               })}
-              
             </div>
           ))}
         </div>
@@ -494,11 +549,62 @@ function ThemeSwitcher({ theme, setTheme }: { theme: Theme; setTheme: (t: Theme)
   );
 }
 
+// ─── Mobile Nav Drawer ────────────────────────────────────────────────────────
+function MobileNavDrawer({ isOpen, onClose, activeId }: { isOpen: boolean; onClose: () => void; activeId: string }) {
+  const navItems = ['about','skills','experience','projects','certifications','achievements','contact'];
+
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    onClose();
+  };
+
+  // Prevent body scroll when drawer is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <>
+      <div className="mobile-nav-overlay" onClick={onClose} aria-hidden="true" />
+      <nav className="mobile-nav-drawer" role="navigation" aria-label="Mobile navigation">
+        <div className="mobile-nav-handle" aria-hidden="true" />
+        <div className="mobile-nav-links">
+          {navItems.map(id => (
+            <button key={id} className={`mobile-nav-link ${activeId === id ? 'mobile-nav-link--active' : ''}`}
+              onClick={() => scrollTo(id)} aria-current={activeId === id ? 'page' : undefined}>
+              <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '0.7rem', color: 'var(--accent)', opacity: 0.5 }}>
+                ~/
+              </span>
+              {id}
+            </button>
+          ))}
+          <div className="mobile-nav-divider" />
+          <a href="https://github.com/vinitsonawane45" target="_blank" rel="noopener noreferrer"
+            className="mobile-nav-link" onClick={onClose}>
+            <Github size={15} aria-hidden="true" /> GitHub
+          </a>
+          <a href="mailto:vinitsonawane76@gmail.com" className="mobile-nav-link" onClick={onClose}>
+            <Mail size={15} aria-hidden="true" /> Email
+          </a>
+        </div>
+      </nav>
+    </>
+  );
+}
+
 // ─── Header ───────────────────────────────────────────────────────────────────
 function Header({ theme, setTheme, onOpenCmd }: { theme: Theme; setTheme: (t: Theme) => void; onOpenCmd: () => void }) {
-  const [visible,   setVisible]   = useState(false);
-  const [scrollPct, setScrollPct] = useState(0);
-  const [activeId,  setActiveId]  = useState('home');
+  const [visible,    setVisible]    = useState(false);
+  const [scrollPct,  setScrollPct]  = useState(0);
+  const [activeId,   setActiveId]   = useState('home');
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const ids = ['home','about','skills','experience','projects','certifications','achievements','contact'];
@@ -518,30 +624,38 @@ function Header({ theme, setTheme, onOpenCmd }: { theme: Theme; setTheme: (t: Th
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   return (
-    <header className={`site-header ${visible ? 'visible' : ''}`}>
-      <div className="header-progress" style={{ width: `${scrollPct}%` }} aria-hidden="true" />
-      <button className="header-logo" onClick={() => scrollTo('home')} aria-label="Back to top">
-        <span className="logo-bracket">[</span>VS<span className="logo-bracket">]</span>
-      </button>
-      <nav className="header-nav" aria-label="Main navigation">
-        {['about','skills','experience','projects','contact'].map(id => (
-          <button key={id} onClick={() => scrollTo(id)}
-            className={`nav-btn ${activeId === id ? 'nav-btn--active' : ''}`}
-            aria-current={activeId === id ? 'page' : undefined}>
-            <span className="nav-btn-text">{id}</span>
-            <span className="nav-btn-indicator" aria-hidden="true" />
+    <>
+      <header className={`site-header ${visible ? 'visible' : ''}`}>
+        <div className="header-progress" style={{ width: `${scrollPct}%` }} aria-hidden="true" />
+        <button className="header-logo" onClick={() => scrollTo('home')} aria-label="Back to top">
+          <span className="logo-bracket">[</span>VS<span className="logo-bracket">]</span>
+        </button>
+        <nav className="header-nav" aria-label="Main navigation">
+          {['about','skills','experience','projects','contact'].map(id => (
+            <button key={id} onClick={() => scrollTo(id)}
+              className={`nav-btn ${activeId === id ? 'nav-btn--active' : ''}`}
+              aria-current={activeId === id ? 'page' : undefined}>
+              <span className="nav-btn-text">{id}</span>
+              <span className="nav-btn-indicator" aria-hidden="true" />
+            </button>
+          ))}
+        </nav>
+        <div className="header-actions">
+          <ThemeSwitcher theme={theme} setTheme={setTheme} />
+          <MagneticWrapper strength={0.22}>
+            <button className="header-command-btn" onClick={onOpenCmd} aria-label="Command palette (Ctrl+K)">
+              <Command size={14} /><span className="cmd-shortcut" aria-hidden="true">⌘K</span>
+            </button>
+          </MagneticWrapper>
+          {/* Mobile menu toggle */}
+          <button className="mobile-menu-btn" onClick={() => setMobileOpen(v => !v)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen}>
+            {mobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
-        ))}
-      </nav>
-      <div className="header-actions">
-        <ThemeSwitcher theme={theme} setTheme={setTheme} />
-        <MagneticWrapper strength={0.22}>
-          <button className="header-command-btn" onClick={onOpenCmd} aria-label="Command palette (Ctrl+K)">
-            <Command size={14} /><span className="cmd-shortcut" aria-hidden="true">⌘K</span>
-          </button>
-        </MagneticWrapper>
-      </div>
-    </header>
+        </div>
+      </header>
+      <MobileNavDrawer isOpen={mobileOpen} onClose={() => setMobileOpen(false)} activeId={activeId} />
+    </>
   );
 }
 
@@ -882,9 +996,9 @@ export default function Home() {
                 <div className="contact-links">
                   {([
                     { href: 'mailto:vinitsonawane76@gmail.com',                          icon: <Mail     size={17}/>, label: 'Email',    value: 'vinitsonawane76@gmail.com',       copy: 'vinitsonawane76@gmail.com' },
-                    { href: 'https://www.linkedin.com/in/vinit-sonawane-14b00632a/', newTab: true,       icon: <Linkedin size={17}/>, label: 'LinkedIn', value: 'linkedin.com/in/vinit-sonawane' },
-                    { href: 'https://github.com/vinitsonawane45',      newTab: true,      icon: <Github   size={17}/>, label: 'GitHub',   value: 'github.com/vinitsonawane45' },
-                    { href: 'tel:+919975294916',                                         icon: <Phone    size={17}/>, label: 'Phone',    value: '+91 9975294916',                  copy: '+919975294916' },
+                    { href: 'https://www.linkedin.com/in/vinit-sonawane-14b00632a/', newTab: true, icon: <Linkedin size={17}/>, label: 'LinkedIn', value: 'linkedin.com/in/vinit-sonawane' },
+                    { href: 'https://github.com/vinitsonawane45', newTab: true,            icon: <Github   size={17}/>, label: 'GitHub',   value: 'github.com/vinitsonawane45' },
+                    { href: 'tel:+919975294916',                                          icon: <Phone    size={17}/>, label: 'Phone',    value: '+91 9975294916',                  copy: '+919975294916' },
                   ] as { href: string; icon: React.ReactNode; label: string; value: string; copy?: string; newTab?: boolean }[]).map(link => (
                     <div key={link.label} className="contact-row">
                       <a href={link.href} target={link.newTab ? '_blank' : undefined}
@@ -933,6 +1047,3 @@ export default function Home() {
     </>
   );
 }
-
-
-
