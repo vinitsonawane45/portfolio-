@@ -312,6 +312,7 @@ const projects = [
   tag: 'AWS · Cloud Computing · DevOps · Deployment',
   accent: '#6c8eff',
   glow: 'rgba(108,142,255,0.14)',
+  role: 'Contributor',
   icon: '☁️',
   description: [
     'Hands-on AWS project demonstrating cloud deployment, resource management, and scalable infrastructure design.',
@@ -328,6 +329,7 @@ const projects = [
   tag: 'Generative AI · Hackathon · NLP',
   accent: '#ec4899',
   glow: 'rgba(236,72,153,0.14)',
+  role: 'Contributor',
   icon: '🚀',
   description: [
     'Hackathon-based GenAI project solving real-world problems using LLMs.',
@@ -356,6 +358,7 @@ const projects = [
   accent: '#f59e0b',
   glow: 'rgba(245,158,11,0.14)',
   icon: '🎨',
+  role: 'Contributor',
   description: [
     'AI-based image generation system using generative models to create visuals from text prompts.',
     'Integrated prompt-based generation with API handling.',
@@ -371,6 +374,7 @@ const projects = [
     tag: 'ChatGPT API · Python · Intent Detection · Conversational AI',
     accent: '#fb7185',
     glow: 'rgba(251,113,133,0.14)',
+    role: 'Contributor',
     icon: '💬',
     description: [
       'AI-powered mental health assistant built using ChatGPT API for empathetic, context-aware conversations.',
@@ -395,6 +399,7 @@ const projects = [
   accent: '#22c55e',
   glow: 'rgba(34,197,94,0.14)',
   icon: '📈',
+  role: 'Contributor',
   description: [
     'Real-time cryptocurrency tracking dashboard using external APIs for live market data.',
     'Displays price trends, market stats, and dynamic updates with responsive UI.',
@@ -404,6 +409,23 @@ const projects = [
     </a>
   ],
   metrics: ['Live Data', 'API Integration', 'Frontend UI'],
+},
+{
+  title: '🤖 Multi-Agent RAG System',
+  tag: 'AI Agents · LLM · RAG · LangChain · Vector DB',
+  accent: '#8b5cf6',
+  glow: 'rgba(139,92,246,0.14)',
+  icon: '🧠',
+  description: [
+    'Designed and implemented a multi-agent Retrieval-Augmented Generation (RAG) system capable of collaborative reasoning and dynamic task execution.',
+    'Built modular AI agents that interact with each other to handle document retrieval, query processing, and response generation using LLMs.',
+    'Integrated vector databases and embedding pipelines for efficient semantic search and context-aware answers.',
+    'Focused on scalable architecture, agent orchestration, and real-world AI system design beyond basic RAG pipelines.',
+    <a href="https://github.com/vinitsonawane45/Multi_Agent_Rag" target="_blank" rel="noopener noreferrer">
+      View Project
+    </a>
+  ],
+  metrics: ['Multi-Agent System', 'RAG Pipeline', 'LLM Orchestration'],
 }
 ];
 
