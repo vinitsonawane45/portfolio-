@@ -477,6 +477,7 @@ type LabEntry = {
   stages: LabStage[];
   currentlyStuckOn?: string;
   helpWanted?: string;
+  github?: string;
 };
 
 const labEntries: LabEntry[] = [
