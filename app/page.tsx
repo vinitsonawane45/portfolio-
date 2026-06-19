@@ -743,14 +743,12 @@ function LabEntryCard({ entry, index, isOpen, onToggle }: {
         <div className="lab-timeline">
           {entry.stages.map((stage, i) => {
             const meta = STAGE_META[stage.kind];
-            const Icon = meta.icon;
+            const Icon = meta.icon as any;
             return (
               <div key={i} className="lab-stage">
                 <div className="lab-stage-rail" aria-hidden="true">
                   <span className="lab-stage-dot" style={{ background: meta.color, boxShadow: `0 0 0 3px ${meta.color}22` }}>
-                    <Icon 
-                      size={11} 
-                    />
+                    <Icon size={11} />
                   </span>
                   {i < entry.stages.length - 1 && <span className="lab-stage-line" />}
                 </div>
@@ -1032,7 +1030,7 @@ function Header({ theme, setTheme, onOpenCmd, activePage, onNavigate }: {
         <nav className="header-nav" aria-label="Main navigation">
           {NAV_PAGES.map(id => {
             const meta = PAGE_META[id];
-            const Icon = meta.icon;
+            const Icon = meta.icon as any;
             return (
               <button key={id} onClick={() => go(id)}
                 className={`nav-btn ${activePage === id ? 'nav-btn--active' : ''}`}
@@ -1075,7 +1073,7 @@ function Header({ theme, setTheme, onOpenCmd, activePage, onNavigate }: {
             <div className="mobile-nav-links">
               {NAV_PAGES.map(id => {
                 const meta = PAGE_META[id];
-                const Icon = meta.icon;
+                const Icon = meta.icon as any;
                 return (
                   <button key={id} onClick={() => go(id)}
                     className={`mobile-nav-item ${activePage === id ? 'mobile-nav-item--active' : ''}`}>
@@ -1538,7 +1536,7 @@ export default function Home() {
               <div className="hero-nav-grid reveal">
                 {NAV_PAGES.map(id => {
                   const meta = PAGE_META[id];
-                  const Icon = meta.icon;
+                  const Icon = meta.icon as any;
                   return (
                     <button key={id} className="hero-nav-tile" onClick={() => navigate(id)}>
                       <Icon size={14} className="hero-nav-tile-icon" aria-hidden="true" />
