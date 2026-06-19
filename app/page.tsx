@@ -789,7 +789,7 @@ function LabStoryCard({ entry, index }: { entry: LabEntry; index: number }) {
   const sMeta = STATUS_META[entry.status];
   const stage = entry.stages[activeStage];
   const stageMeta = STAGE_META[stage.kind];
-  const StageIcon = stageMeta.icon;
+  const StageIcon = stageMeta.icon as any;
 
   const stageEmoji: Record<LabStage['kind'], string> = {
     idea: '💡', experiment: '🧪', failure: '💥', decision: '⚡', lesson: '📖', shipped: '🚀',
