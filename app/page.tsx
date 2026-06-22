@@ -996,6 +996,117 @@ type BlogPost = {
   linkedinUrl?: string;
 };
 
+const DEFAULT_BLOG_POSTS: BlogPost[] = [
+  {
+    id: 'blog-01',
+    title: 'Scaling LLM Production with Vector Search',
+    excerpt: 'Build LLM-powered search systems with fast retrieval, caching, and semantic ranking for reliable production delivery.',
+    content: 'In modern AI systems, scaling large language models requires the right combination of vector storage, retrievers, and cache layers. Start by choosing a performant embedding model and indexer. Use approximate nearest neighbor search to keep latency low, and implement query-level caching for repeated requests. Monitor relevance and use feedback loops to improve answer quality over time. Production-ready pipelines must balance accuracy, cost, and responsiveness.',
+    date: 'Jun 2026',
+    tags: ['AI', 'NLP', 'RAG', 'Vector Search'],
+    likes: 12,
+  },
+  {
+    id: 'blog-02',
+    title: 'Building NLP Pipelines for Clean Data',
+    excerpt: 'Discover how to turn noisy raw text into reliable features for NLP models using tokenization, normalization, and data validation.',
+    content: 'Data quality matters most for natural language processing. A strong NLP pipeline begins with text normalization, tokenization, and noise removal. Add spelling correction, stopword filtering, and entity preservation for downstream tasks. Use structured validation rules to catch broken formats, URL spam, or unbalanced punctuation. Clean, consistent text inputs help models learn faster and generalize better in production.',
+    date: 'May 2026',
+    tags: ['NLP', 'Data', 'ML'],
+    likes: 8,
+  },
+  {
+    id: 'blog-03',
+    title: 'Fine-Tuning vs Prompt-Tuning for LLMs',
+    excerpt: 'Compare fine-tuning, prompt tuning, and adapters to choose the best approach for your LLM application.',
+    content: 'Large language models can be adapted in several ways. Fine-tuning updates model weights directly and is best when you have high-quality labeled data and performance requirements. Prompt tuning leaves the base model intact and is useful for small datasets or fast experimentation. Adapter layers can be a middle path, reducing cost while preserving model stability. Choose the method that fits your project size, latency budget, and maintenance needs.',
+    date: 'Apr 2026',
+    tags: ['LLM', 'Fine-Tuning', 'Prompt Engineering'],
+    likes: 11,
+  },
+  {
+    id: 'blog-04',
+    title: 'Deep Learning Architectures for Text Understanding',
+    excerpt: 'Explore transformer, convolutional, and hybrid architectures that deliver strong performance on text classification and question answering.',
+    content: 'Text understanding has evolved from RNNs to transformers and beyond. Self-attention architectures like BERT and GPT excel at contextual representation, while convolutional models can still provide fast, lightweight feature extractors. Hybrid models combine convolutional frontends with transformer backends for efficient inference. Use architecture selection based on task complexity, latency expectations, and available training resources.',
+    date: 'Apr 2026',
+    tags: ['Deep Learning', 'Transformers', 'NLP'],
+    likes: 10,
+  },
+  {
+    id: 'blog-05',
+    title: 'End-to-End ML Deployment on AWS',
+    excerpt: 'A practical guide to deploying machine learning systems on AWS using FastAPI, Lambda, and managed storage.',
+    content: 'Deploying ML models reliably means connecting training outputs to a scalable serving stack. Use FastAPI for lightweight inference endpoints, containerize the app with Docker, and deploy on AWS Lambda or ECS depending on traffic patterns. Store embeddings in S3 and use DynamoDB or MongoDB for metadata. Automate deployment with GitHub Actions or CodePipeline to ensure repeatable releases and rollbacks.',
+    date: 'Mar 2026',
+    tags: ['ML', 'AWS', 'Deployment'],
+    likes: 9,
+  },
+  {
+    id: 'blog-06',
+    title: 'Transformer-Based Summarization Workflows',
+    excerpt: 'Learn how to build reliable summarization systems using pretrained transformers, prompt chains, and evaluation metrics.',
+    content: 'Summarization is a classic NLP task powered by transformer models. Use a task-specific prompt or a fine-tuned model for best results. Design the pipeline to include content filtering, chunking long documents, and choosing the right temperature for concise output. Evaluate with ROUGE scores, human review, and semantic similarity checks. A good summarization workflow blends model outputs with validation and fallback logic.',
+    date: 'Mar 2026',
+    tags: ['NLP', 'Summarization', 'Transformers'],
+    likes: 7,
+  },
+  {
+    id: 'blog-07',
+    title: 'Model Compression Techniques for Low-Latency AI',
+    excerpt: 'Explore pruning, quantization, and distillation strategies that shrink models without sacrificing accuracy.',
+    content: 'Low-latency AI requires smaller, faster models. Quantization converts weights to lower precision, pruning removes redundant neurons, and knowledge distillation transfers intelligence to a compact student model. Together these techniques enable deployment on edge devices and serverless functions. Always validate compressed models on real data to ensure the user experience remains strong.',
+    date: 'Feb 2026',
+    tags: ['AI', 'Optimization', 'Quantization'],
+    likes: 10,
+  },
+  {
+    id: 'blog-08',
+    title: 'Responsible AI: Bias Mitigation in NLP',
+    excerpt: 'Understand the practical steps for detecting and reducing bias in NLP models and data pipelines.',
+    content: 'Building trusted NLP systems means addressing fairness from data collection to model design. Use bias detection tests, review token-level data distributions, and apply counterfactual examples to identify problematic behavior. Mitigate bias with balanced datasets, fairness-aware sampling, and human-in-the-loop validation. Responsible AI is an ongoing process, not a one-time fix.',
+    date: 'Feb 2026',
+    tags: ['AI Ethics', 'Bias', 'NLP'],
+    likes: 9,
+  },
+  {
+    id: 'blog-09',
+    title: 'Real-Time Inference with FastAPI and AWS Lambda',
+    excerpt: 'A hands-on approach to building responsive AI services with serverless inference APIs.',
+    content: 'Real-time AI means low latency and reliable availability. FastAPI provides a lightweight framework for inference endpoints, while AWS Lambda can scale automatically to demand. Use warm-start strategies and small model sizes to avoid cold-start delays. Combine Lambda with API Gateway or Application Load Balancer for a production-ready service that responds quickly to user queries.',
+    date: 'Jan 2026',
+    tags: ['ML', 'Serverless', 'API'],
+    likes: 14,
+  },
+  {
+    id: 'blog-10',
+    title: 'RAG Systems for Document Intelligence',
+    excerpt: 'How to build Retrieval-Augmented Generation systems that answer questions over documents using embeddings and context retrieval.',
+    content: 'RAG systems combine retrieval and generation to answer complex document queries. Store embeddings in a vector index, retrieve relevant passages, and pass the context into a generative model. Carefully design prompt templates and guard against hallucinations with source grounding. Use RAG to power applications such as knowledge bases, contract analysis, and assistant workflows.',
+    date: 'Jan 2026',
+    tags: ['RAG', 'NLP', 'Embeddings'],
+    likes: 13,
+  },
+  {
+    id: 'blog-11',
+    title: 'Evaluating NLP Models with Precision and Recall',
+    excerpt: 'Measure your model effectively by using precision, recall, F1, and additional task-specific evaluation strategies.',
+    content: 'Evaluation is key to understanding NLP model performance. Precision and recall highlight the tradeoff between false positives and false negatives. Use F1 score for balanced tasks and add task-specific metrics like BLEU for translation or ROUGE for summarization. Human evaluation and error analysis reveal gaps that automated metrics can miss.',
+    date: 'Dec 2025',
+    tags: ['NLP', 'Metrics', 'Evaluation'],
+    likes: 8,
+  },
+  {
+    id: 'blog-12',
+    title: 'Automated Feature Engineering for Machine Learning',
+    excerpt: 'Explore how feature engineering and feature stores improve model accuracy and accelerate ML development.',
+    content: 'Feature engineering is the foundation of many successful ML systems. Create reusable features, track feature definitions, and store them in a feature repository. Use automated feature generation tools to surface candidate variables, but validate them with domain knowledge. Well-structured feature engineering improves model stability and reduces retraining overhead.',
+    date: 'Dec 2025',
+    tags: ['ML', 'Feature Engineering', 'Data'],
+    likes: 11,
+  },
+];
+
 // ─── Page types ───────────────────────────────────────────────────────────────
 type PageId = 'home' | 'about' | 'skills' | 'experience' | 'projects' | 'lab' | 'blog' | 'certifications' | 'achievements' | 'contact';
 
@@ -1024,8 +1135,15 @@ function BlogSection() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem('portfolio-blog-posts');
-      if (saved) setPosts(JSON.parse(saved));
-    } catch {}
+      if (saved) {
+        setPosts(JSON.parse(saved));
+      } else {
+        setPosts(DEFAULT_BLOG_POSTS);
+        localStorage.setItem('portfolio-blog-posts', JSON.stringify(DEFAULT_BLOG_POSTS));
+      }
+    } catch {
+      setPosts(DEFAULT_BLOG_POSTS);
+    }
   }, []);
 
   const savePost = (e: FormEvent) => {
@@ -1078,7 +1196,7 @@ function BlogSection() {
             <div className="section-header reveal">
               <p className="section-label">// my_thoughts</p>
               <h2 className="section-heading">Blog & Articles</h2>
-              <p className="blog-tagline">Deep dives into AI, LLMs, and building scalable systems.</p>
+              <p className="blog-tagline">AI, NLP, Machine Learning, and Deep Learning articles with production-ready insights.</p>
             </div>
 
             <button className="blog-create-btn reveal" onClick={() => setShowForm(!showForm)}>
