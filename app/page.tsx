@@ -10,7 +10,7 @@ import {
   Command, Zap, Cpu, Sparkles, ExternalLink, Copy, Check, Package, Send,
   Github, GraduationCap, Trophy, MessageSquare, Loader2,
   FlaskConical, FlaskRound, AlertTriangle, GitBranch, BookOpen,
-  Rocket, MessageCircle, ChevronRight, Filter, ThumbsUp, HandHelping,
+  Rocket, MessageCircle, ChevronRight, Filter, ThumbsUp, HandHelping, Pencil,
 } from 'lucide-react';
 
 import { Canvas } from '@react-three/fiber';
@@ -984,8 +984,20 @@ function LabSection({ onNavigate }: { onNavigate: (p: PageId) => void }) {
   );
 }
 
+// ─── Blog Types ───────────────────────────────────────────────────────────────
+type BlogPost = {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  tags: string[];
+  likes: number;
+  linkedinUrl?: string;
+};
+
 // ─── Page types ───────────────────────────────────────────────────────────────
-type PageId = 'home' | 'about' | 'skills' | 'experience' | 'projects' | 'lab' | 'certifications' | 'achievements' | 'contact';
+type PageId = 'home' | 'about' | 'skills' | 'experience' | 'projects' | 'lab' | 'blog' | 'certifications' | 'achievements' | 'contact';
 
 const PAGE_META: Record<PageId, { label: string; icon: React.ElementType; short: string }> = {
   home:           { label: 'Home',           icon: User,         short: '~' },
@@ -994,12 +1006,171 @@ const PAGE_META: Record<PageId, { label: string; icon: React.ElementType; short:
   experience:     { label: 'Experience',     icon: Briefcase,    short: '03' },
   projects:       { label: 'Projects',       icon: Package,      short: '04' },
   lab:            { label: "Builder's Lab",  icon: FlaskConical, short: '05' },
-  certifications: { label: 'Certifications', icon: Award,        short: '06' },
-  achievements:   { label: 'Achievements',  icon: Trophy,       short: '07' },
-  contact:        { label: 'Contact',        icon: Send,         short: '08' },
+  blog:           { label: 'Blog',           icon: BookOpen,     short: '06' },
+  certifications: { label: 'Certifications', icon: Award,        short: '07' },
+  achievements:   { label: 'Achievements',  icon: Trophy,       short: '08' },
+  contact:        { label: 'Contact',        icon: Send,         short: '09' },
 };
 
-const NAV_PAGES: PageId[] = ['about','skills','experience','projects','lab','certifications','achievements','contact'];
+const NAV_PAGES: PageId[] = ['about','skills','experience','projects','lab','blog','certifications','achievements','contact'];
+
+// ─── Blog Section ─────────────────────────────────────────────────────────────
+function BlogSection() {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ title: '', excerpt: '', content: '', tags: '' });
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('portfolio-blog-posts');
+      if (saved) setPosts(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  const savePost = (e: FormEvent) => {
+    e.preventDefault();
+    if (!formData.title.trim() || !formData.content.trim()) return;
+    
+    const newPost: BlogPost = {
+      id: Date.now().toString(),
+      title: formData.title,
+      excerpt: formData.excerpt || formData.content.slice(0, 100),
+      content: formData.content,
+      date: new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }),
+      tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
+      likes: 0,
+    };
+
+    const updated = [newPost, ...posts];
+    setPosts(updated);
+    try { localStorage.setItem('portfolio-blog-posts', JSON.stringify(updated)); } catch {}
+    setFormData({ title: '', excerpt: '', content: '', tags: '' });
+    setShowForm(false);
+  };
+
+  const deletePost = (id: string) => {
+    const updated = posts.filter(p => p.id !== id);
+    setPosts(updated);
+    try { localStorage.setItem('portfolio-blog-posts', JSON.stringify(updated)); } catch {}
+    setSelectedPost(null);
+  };
+
+  const likePost = (id: string) => {
+    const updated = posts.map(p => p.id === id ? { ...p, likes: p.likes + 1 } : p);
+    setPosts(updated);
+    try { localStorage.setItem('portfolio-blog-posts', JSON.stringify(updated)); } catch {}
+  };
+
+  const shareToLinkedIn = (post: BlogPost) => {
+    const url = window.location.href;
+    const text = `Check out my latest blog: "${post.title}"\n\n${post.excerpt}\n\nRead more on my portfolio!`;
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(post.title)}&summary=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const currentPost = selectedPost ? posts.find(p => p.id === selectedPost) : null;
+
+  return (
+    <section className="section blog-section">
+      <div className="container">
+        {!selectedPost ? (
+          <>
+            <div className="section-header reveal">
+              <p className="section-label">// my_thoughts</p>
+              <h2 className="section-heading">Blog & Articles</h2>
+              <p className="blog-tagline">Deep dives into AI, LLMs, and building scalable systems.</p>
+            </div>
+
+            <button className="blog-create-btn reveal" onClick={() => setShowForm(!showForm)}>
+              <Pencil size={15} /> {showForm ? 'Cancel' : 'Write New Post'}
+            </button>
+
+            {showForm && (
+              <div className="blog-form-wrap reveal">
+                <form onSubmit={savePost} className="blog-form">
+                  <input type="text" placeholder="Post title..." value={formData.title} 
+                    onChange={(e) => setFormData({...formData, title: e.target.value})} required className="blog-input" />
+                  <input type="text" placeholder="Brief excerpt..." value={formData.excerpt} 
+                    onChange={(e) => setFormData({...formData, excerpt: e.target.value})} className="blog-input" />
+                  <textarea placeholder="Your content..." value={formData.content} 
+                    onChange={(e) => setFormData({...formData, content: e.target.value})} required className="blog-textarea" rows={8} />
+                  <input type="text" placeholder="Tags (comma-separated)..." value={formData.tags} 
+                    onChange={(e) => setFormData({...formData, tags: e.target.value})} className="blog-input" />
+                  <button type="submit" className="blog-submit-btn"><Send size={14} /> Publish Post</button>
+                </form>
+              </div>
+            )}
+
+            {posts.length === 0 ? (
+              <div className="blog-empty reveal">
+                <BookOpen size={32} />
+                <p>No posts yet. Share your first insight!</p>
+              </div>
+            ) : (
+              <div className="blog-grid reveal">
+                {posts.map((post, i) => (
+                  <SpotlightCard key={post.id} className="blog-card reveal" style={{ transitionDelay: `${i * 80}ms` }}>
+                    <button className="blog-card-content" onClick={() => setSelectedPost(post.id)}>
+                      <div className="blog-card-head">
+                        <h3 className="blog-card-title">{post.title}</h3>
+                        <span className="blog-card-date">{post.date}</span>
+                      </div>
+                      <p className="blog-card-excerpt">{post.excerpt}</p>
+                      <div className="blog-card-tags">
+                        {post.tags.map(tag => <span key={tag} className="blog-tag">{tag}</span>)}
+                      </div>
+                    </button>
+                    <div className="blog-card-footer">
+                      <span className="blog-like-count">❤️ {post.likes}</span>
+                      <button className="blog-read-more" onClick={() => setSelectedPost(post.id)}>
+                        Read More <ArrowRight size={12} />
+                      </button>
+                    </div>
+                  </SpotlightCard>
+                ))}
+              </div>
+            )}
+          </>
+        ) : currentPost && (
+          <div className="blog-detail-view reveal">
+            <button className="blog-back-btn" onClick={() => setSelectedPost(null)}>
+              <ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} /> Back to Posts
+            </button>
+            <article className="blog-post-detail">
+              <header className="blog-post-header">
+                <h1>{currentPost.title}</h1>
+                <div className="blog-post-meta">
+                  <span className="blog-post-date">{currentPost.date}</span>
+                  <div className="blog-post-tags">
+                    {currentPost.tags.map(tag => <span key={tag} className="blog-tag">{tag}</span>)}
+                  </div>
+                </div>
+              </header>
+              <div className="blog-post-content">
+                {currentPost.content.split('\n').map((para, i) => 
+                  para.trim() ? <p key={i}>{para}</p> : <br key={i} />
+                )}
+              </div>
+              <footer className="blog-post-footer">
+                <div className="blog-post-actions">
+                  <button className="blog-action-btn" onClick={() => likePost(currentPost.id)}>
+                    ❤️ {currentPost.likes} Likes
+                  </button>
+                  <button className="blog-action-btn blog-share-linkedin" onClick={() => shareToLinkedIn(currentPost)}>
+                    <Linkedin size={14} /> Share to LinkedIn
+                  </button>
+                </div>
+                <button className="blog-delete-btn" onClick={() => deletePost(currentPost.id)}>
+                  🗑️ Delete Post
+                </button>
+              </footer>
+            </article>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 function Header({ theme, setTheme, onOpenCmd, activePage, onNavigate }: {
@@ -1303,6 +1474,8 @@ export default function Home() {
           )}
 
           {activePage === 'lab' && <LabSection onNavigate={navigate} />}
+
+          {activePage === 'blog' && <BlogSection />}
 
           {activePage === 'certifications' && (
             <section className="section">
