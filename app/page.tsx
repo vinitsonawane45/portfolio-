@@ -996,7 +996,74 @@ type BlogPost = {
   linkedinUrl?: string;
 };
 
+const BLOG_VERSION = 'v2';
+
 const DEFAULT_BLOG_POSTS: BlogPost[] = [
+  // ── New Topic Posts ──
+  {
+    id: 'blog-ai-01',
+    title: 'The State of AI in 2026: From Narrow to General',
+    excerpt: 'AI has crossed several inflection points. Discover the latest breakthroughs transforming industries and what it means for builders.',
+    content: 'Artificial Intelligence in 2026 is no longer just hype — it is the backbone of modern software. From multimodal models that reason over text, images, and code, to agentic systems that act autonomously in the real world, the field has evolved dramatically. Understanding the landscape of current AI capabilities helps developers and researchers build more purposeful systems. Focus areas include foundation models, safety alignment, interpretability research, and efficient inference at scale.',
+    date: 'Jun 2026',
+    tags: ['AI', 'Foundation Models', 'Research'],
+    likes: 18,
+  },
+  {
+    id: 'blog-agents-01',
+    title: 'Building Production-Grade AI Agents',
+    excerpt: 'AI agents that plan, act, and recover from failures are redefining automation. Here is how to build them reliably.',
+    content: 'AI Agents go beyond simple chatbots — they plan goals, select tools, execute actions, and adapt based on feedback. Production-grade agents require careful design: a reliable planning loop, grounded tool use, memory management, and robust error recovery. Use frameworks like LangGraph or custom state machines to model agent flows. Implement observability with traces and logs so you can debug agent behavior in production. Always design for failure — an agent that degrades gracefully is more valuable than one that never fails.',
+    date: 'Jun 2026',
+    tags: ['AI Agents', 'LLM', 'Automation'],
+    likes: 22,
+  },
+  {
+    id: 'blog-blockchain-ai-01',
+    title: 'Blockchain Meets AI: Decentralized Intelligence',
+    excerpt: 'The convergence of blockchain and AI unlocks verifiable, tamper-proof model governance, data provenance, and decentralized inference.',
+    content: 'Combining blockchain with AI creates exciting possibilities for trust and transparency. On-chain model provenance allows users to verify which model version produced a result. Decentralized data marketplaces incentivize contributors while preserving privacy using zero-knowledge proofs. Smart contracts can trigger AI inference as part of DeFi workflows or autonomous agents. Projects like Ocean Protocol and Bittensor are pioneering this space. The key challenge is bridging the latency of on-chain execution with the speed of real-time AI inference.',
+    date: 'May 2026',
+    tags: ['Blockchain', 'AI', 'Web3', 'Decentralized AI'],
+    likes: 15,
+  },
+  {
+    id: 'blog-agi-01',
+    title: 'AGI: How Close Are We Really?',
+    excerpt: 'Artificial General Intelligence is the north star of AI research. Unpacking what AGI means, the leading approaches, and the open challenges.',
+    content: 'Artificial General Intelligence (AGI) refers to a system that can perform any intellectual task a human can. Current frontier models exhibit remarkable reasoning, creativity, and domain transfer — but they still rely on human-defined training objectives and struggle with true open-ended generalization. Leading research labs are pursuing AGI through scaling, self-play, reinforcement learning from human feedback, and world models. Safety alignment is arguably the most critical unsolved problem on the path to AGI. Timelines remain deeply uncertain, but the pace of progress demands serious preparation today.',
+    date: 'May 2026',
+    tags: ['AGI', 'AI Safety', 'Research'],
+    likes: 30,
+  },
+  {
+    id: 'blog-nlp-01',
+    title: 'Modern NLP: Beyond BERT and GPT',
+    excerpt: 'The NLP field has exploded past its transformer origins. Explore the techniques powering next-generation language understanding.',
+    content: 'Natural Language Processing has evolved far beyond the BERT and GPT era. Today, models are trained with instruction tuning, RLHF, and Constitutional AI to align with human intent. Mixture-of-Experts (MoE) architectures improve efficiency without sacrificing capability. Retrieval-augmented models ground responses in external knowledge, reducing hallucinations. For practitioners, the focus has shifted from pretraining to fine-tuning, prompt engineering, and evaluation at scale. NLP is now a critical infrastructure layer in virtually every software product.',
+    date: 'Apr 2026',
+    tags: ['NLP', 'Transformers', 'LLM', 'RLHF'],
+    likes: 19,
+  },
+  {
+    id: 'blog-ml-01',
+    title: 'Machine Learning in Production: The Full Stack',
+    excerpt: 'Shipping an ML model is just the beginning. Learn the full production stack from data pipelines to monitoring and retraining.',
+    content: 'Machine Learning in production is a different beast from ML in notebooks. The full stack includes data ingestion, feature pipelines, experiment tracking, model versioning, serving infrastructure, monitoring, and automated retraining. Tools like MLflow, DVC, and Weights & Biases help manage the lifecycle. Model drift detection and data quality checks are non-negotiable for long-running systems. Building a healthy MLOps culture — where data scientists and engineers collaborate closely — is the most impactful investment a team can make.',
+    date: 'Apr 2026',
+    tags: ['Machine Learning', 'MLOps', 'Production'],
+    likes: 16,
+  },
+  {
+    id: 'blog-dl-01',
+    title: 'Deep Learning Fundamentals Every Engineer Should Know',
+    excerpt: 'Backpropagation, attention, normalization, regularization — the core building blocks of deep learning demystified.',
+    content: 'Deep Learning powers everything from image recognition to language generation. At its core, a neural network learns by adjusting weights via backpropagation and gradient descent. Attention mechanisms allow models to focus on relevant context across long sequences. Batch normalization and dropout stabilize training and prevent overfitting. Residual connections enable training of very deep networks. Understanding these fundamentals helps you debug failing models, choose the right architecture, and interpret research papers. Whether you are building CNNs, RNNs, or Transformers, the same principles apply.',
+    date: 'Mar 2026',
+    tags: ['Deep Learning', 'Neural Networks', 'Fundamentals'],
+    likes: 24,
+  },
+  // ── Original Posts ──
   {
     id: 'blog-01',
     title: 'Scaling LLM Production with Vector Search',
@@ -1134,12 +1201,14 @@ function BlogSection() {
 
   useEffect(() => {
     try {
+      const savedVersion = localStorage.getItem('portfolio-blog-version');
       const saved = localStorage.getItem('portfolio-blog-posts');
-      if (saved) {
+      if (saved && savedVersion === BLOG_VERSION) {
         setPosts(JSON.parse(saved));
       } else {
         setPosts(DEFAULT_BLOG_POSTS);
         localStorage.setItem('portfolio-blog-posts', JSON.stringify(DEFAULT_BLOG_POSTS));
+        localStorage.setItem('portfolio-blog-version', BLOG_VERSION);
       }
     } catch {
       setPosts(DEFAULT_BLOG_POSTS);
@@ -1193,18 +1262,18 @@ function BlogSection() {
       <div className="container">
         {!selectedPost ? (
           <>
-            <div className="section-header reveal">
+            <div className="section-header">
               <p className="section-label">// my_thoughts</p>
               <h2 className="section-heading">Blog & Articles</h2>
               <p className="blog-tagline">AI, NLP, Machine Learning, and Deep Learning articles with production-ready insights.</p>
             </div>
 
-            <button className="blog-create-btn reveal" onClick={() => setShowForm(!showForm)}>
+            <button className="blog-create-btn" onClick={() => setShowForm(!showForm)}>
               <Pencil size={15} /> {showForm ? 'Cancel' : 'Write New Post'}
             </button>
 
             {showForm && (
-              <div className="blog-form-wrap reveal">
+              <div className="blog-form-wrap">
                 <form onSubmit={savePost} className="blog-form">
                   <input type="text" placeholder="Post title..." value={formData.title} 
                     onChange={(e) => setFormData({...formData, title: e.target.value})} required className="blog-input" />
@@ -1220,14 +1289,14 @@ function BlogSection() {
             )}
 
             {posts.length === 0 ? (
-              <div className="blog-empty reveal">
+              <div className="blog-empty">
                 <BookOpen size={32} />
                 <p>No posts yet. Share your first insight!</p>
               </div>
             ) : (
-              <div className="blog-grid reveal">
+              <div className="blog-grid">
                 {posts.map((post, i) => (
-                  <SpotlightCard key={post.id} className="blog-card reveal" style={{ transitionDelay: `${i * 80}ms` }}>
+                  <SpotlightCard key={post.id} className="blog-card" style={{ animationDelay: `${i * 80}ms` }}>
                     <button className="blog-card-content" onClick={() => setSelectedPost(post.id)}>
                       <div className="blog-card-head">
                         <h3 className="blog-card-title">{post.title}</h3>
@@ -1250,7 +1319,7 @@ function BlogSection() {
             )}
           </>
         ) : currentPost && (
-          <div className="blog-detail-view reveal">
+          <div className="blog-detail-view">
             <button className="blog-back-btn" onClick={() => setSelectedPost(null)}>
               <ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} /> Back to Posts
             </button>
